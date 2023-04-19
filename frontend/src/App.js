@@ -22,6 +22,8 @@ import client from './apollo/client'
 import Home from './components/Home'
 import CourseList from './components/CourseList'
 import NewCourseForm from './components/NewCourseForm'
+import SymptomsChecker from './components/SymptomsChecker'
+
 import EditCourse from './components/EditCourse'
 //
 function App() {
@@ -42,6 +44,9 @@ function App() {
                 <Nav.Link as={Link} to="/courseslist">
                   List of Courses
                 </Nav.Link>
+                <Nav.Link as={Link} to="/symptoms-checker">
+                  Symptoms Checker
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>
@@ -54,6 +59,7 @@ function App() {
             <Route path="courseslist" element={<CourseList />} />
             <Route path="course/:id" element={<EditCourse />} />
             <Route path="addcourse" element={<NewCourseForm />} />
+            <Route path="symptoms-checker" element={<SymptomsChecker />} />
           </Routes>
         </div>
       </Router>
