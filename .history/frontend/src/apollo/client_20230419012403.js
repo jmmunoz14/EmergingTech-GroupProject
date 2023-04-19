@@ -1,9 +1,0 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
-
-const client = new ApolloClient({
-  //uri: 'http://localhost:5000/courses',
-  uri: 'http://localhost:5000/users',
-  cache: new InMemoryCache(),
-})
-
-export default client
