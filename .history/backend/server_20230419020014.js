@@ -12,6 +12,7 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require('graphql')
+
 const User = require('./models/user')
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -31,6 +32,9 @@ const UserType = new GraphQLObjectType({
     email: { type: GraphQLNonNull(GraphQLString) },
     firstName: { type: GraphQLNonNull(GraphQLString) },
     lastName: { type: GraphQLNonNull(GraphQLString) },
+    address: { type: GraphQLNonNull(GraphQLString) },
+    city: { type: GraphQLNonNull(GraphQLString) },
+    phone: { type: GraphQLNonNull(GraphQLString) },
     usertype: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },
   }),
@@ -75,6 +79,9 @@ const RootMutationType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
         firstName: { type: GraphQLNonNull(GraphQLString) },
         lastName: { type: GraphQLNonNull(GraphQLString) },
+        address: { type: GraphQLNonNull(GraphQLString) },
+        city: { type: GraphQLNonNull(GraphQLString) },
+        phone: { type: GraphQLNonNull(GraphQLString) },
         usertype: { type: GraphQLNonNull(GraphQLString) },
         password: { type: GraphQLNonNull(GraphQLString) },
       },
@@ -83,10 +90,15 @@ const RootMutationType = new GraphQLObjectType({
           email: args.email,
           firstName: args.firstName,
           lastName: args.lastName,
+          address: args.address,
+          city: args.city,
+          phone: args.phone,
           usertype: args.usertype,
           password: args.password,
         })
+
         const newUser = await user.save()
+
         console.log('adding a user')
 
         return newUser
@@ -100,6 +112,9 @@ const RootMutationType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
         firstName: { type: GraphQLNonNull(GraphQLString) },
         lastName: { type: GraphQLNonNull(GraphQLString) },
+        address: { type: GraphQLNonNull(GraphQLString) },
+        city: { type: GraphQLNonNull(GraphQLString) },
+        phone: { type: GraphQLNonNull(GraphQLString) },
         usertype: { type: GraphQLNonNull(GraphQLString) },
         password: { type: GraphQLNonNull(GraphQLString) },
       },
@@ -111,6 +126,9 @@ const RootMutationType = new GraphQLObjectType({
               email: args.email,
               firstName: args.firstName,
               lastName: args.lastName,
+              address: args.address,
+              city: args.city,
+              phone: args.phone,
               usertype: args.usertype,
               password: args.password,
             },

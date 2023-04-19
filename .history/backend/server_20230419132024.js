@@ -12,6 +12,7 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require('graphql')
+
 const User = require('./models/user')
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -86,7 +87,9 @@ const RootMutationType = new GraphQLObjectType({
           usertype: args.usertype,
           password: args.password,
         })
+
         const newUser = await user.save()
+
         console.log('adding a user')
 
         return newUser

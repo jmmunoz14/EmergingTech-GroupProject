@@ -12,6 +12,7 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require('graphql')
+const Course = require('./models/course')
 const User = require('./models/user')
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -23,6 +24,18 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
 
+const CourseType = new GraphQLObjectType({
+  name: 'Course',
+  description: 'This represents a course to the app',
+  fields: () => ({
+    _id: { type: GraphQLNonNull(GraphQLString) },
+    courseCode: { type: GraphQLNonNull(GraphQLString) },
+    courseName: { type: GraphQLNonNull(GraphQLString) },
+    section: { type: GraphQLNonNull(GraphQLString) },
+    semester: { type: GraphQLNonNull(GraphQLString) },
+  }),
+})
+
 const UserType = new GraphQLObjectType({
   name: 'User',
   description: 'This represents a user to the app',
@@ -31,6 +44,9 @@ const UserType = new GraphQLObjectType({
     email: { type: GraphQLNonNull(GraphQLString) },
     firstName: { type: GraphQLNonNull(GraphQLString) },
     lastName: { type: GraphQLNonNull(GraphQLString) },
+    address: { type: GraphQLNonNull(GraphQLString) },
+    city: { type: GraphQLNonNull(GraphQLString) },
+    phone: { type: GraphQLNonNull(GraphQLString) },
     usertype: { type: GraphQLNonNull(GraphQLString) },
     password: { type: GraphQLNonNull(GraphQLString) },
   }),
@@ -40,9 +56,9 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    user: {
+    course: {
       type: UserType,
-      description: 'A Single User',
+      description: 'A Single Course',
       args: {
         _id: { type: GraphQLString },
       },
@@ -54,11 +70,11 @@ const RootQueryType = new GraphQLObjectType({
     },
     users: {
       type: new GraphQLList(UserType),
-      description: 'List of All Users',
+      description: 'List of All Courses',
       resolve: async () => {
         console.log('siuuu')
-        const users = await User.find()
-        return users
+        const courses = await Course.find()
+        return courses
       },
     },
   }),
@@ -68,67 +84,65 @@ const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
   fields: () => ({
-    addUser: {
-      type: UserType,
-      description: 'Add a User',
+    addCourse: {
+      type: CourseType,
+      description: 'Add a Course',
       args: {
-        email: { type: GraphQLNonNull(GraphQLString) },
-        firstName: { type: GraphQLNonNull(GraphQLString) },
-        lastName: { type: GraphQLNonNull(GraphQLString) },
-        usertype: { type: GraphQLNonNull(GraphQLString) },
-        password: { type: GraphQLNonNull(GraphQLString) },
+        courseCode: { type: GraphQLNonNull(GraphQLString) },
+        courseName: { type: GraphQLNonNull(GraphQLString) },
+        section: { type: GraphQLNonNull(GraphQLString) },
+        semester: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, args) => {
-        const user = new User({
-          email: args.email,
-          firstName: args.firstName,
-          lastName: args.lastName,
-          usertype: args.usertype,
-          password: args.password,
+        const course = new Course({
+          courseCode: args.courseCode,
+          courseName: args.courseName,
+          section: args.section,
+          semester: args.semester,
         })
-        const newUser = await user.save()
-        console.log('adding a user')
 
-        return newUser
+        const newCourse = await course.save()
+
+        console.log('adding a course')
+
+        return newCourse
       },
     },
-    editUser: {
-      type: UserType,
-      description: 'Edit a User',
+    editCourse: {
+      type: CourseType,
+      description: 'Edit a Course',
       args: {
         _id: { type: GraphQLNonNull(GraphQLString) },
-        email: { type: GraphQLNonNull(GraphQLString) },
-        firstName: { type: GraphQLNonNull(GraphQLString) },
-        lastName: { type: GraphQLNonNull(GraphQLString) },
-        usertype: { type: GraphQLNonNull(GraphQLString) },
-        password: { type: GraphQLNonNull(GraphQLString) },
+        courseCode: { type: GraphQLNonNull(GraphQLString) },
+        courseName: { type: GraphQLNonNull(GraphQLString) },
+        section: { type: GraphQLNonNull(GraphQLString) },
+        semester: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, args) => {
-        const updatedUser = await User.findByIdAndUpdate(
+        const updatedCourse = await Course.findByIdAndUpdate(
           args._id,
           {
             $set: {
-              email: args.email,
-              firstName: args.firstName,
-              lastName: args.lastName,
-              usertype: args.usertype,
-              password: args.password,
+              courseCode: args.courseCode,
+              courseName: args.courseName,
+              section: args.section,
+              semester: args.semester,
             },
           },
           { new: true },
         )
-        return updatedUser
+        return updatedCourse
       },
     },
-    deleteUser: {
-      type: UserType,
-      description: 'Delete a User',
+    deleteCourse: {
+      type: CourseType,
+      description: 'Delete a Course',
       args: {
         _id: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, args) => {
-        const deletedUser = await User.findByIdAndDelete(args._id)
-        return deletedUser
+        const deletedCourse = await Course.findByIdAndDelete(args._id)
+        return deletedCourse
       },
     },
   }),
@@ -143,11 +157,11 @@ app.use(cors())
 
 app.use(express.json())
 app.use(
-  '/users',
+  '/courses',
   expressGraphQL({
     schema: schema,
     graphiql: true,
   }),
 )
 
-app.listen(5000, () => console.log('GraphQL: Server Started'))
+app.listen(5000, () => console.log('Server Started'))

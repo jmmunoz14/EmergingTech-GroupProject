@@ -73,10 +73,11 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Add a User',
       args: {
         email: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) },
         firstName: { type: GraphQLNonNull(GraphQLString) },
         lastName: { type: GraphQLNonNull(GraphQLString) },
         usertype: { type: GraphQLNonNull(GraphQLString) },
-        password: { type: GraphQLNonNull(GraphQLString) },
+        
       },
       resolve: async (parent, args) => {
         const user = new User({
@@ -86,7 +87,9 @@ const RootMutationType = new GraphQLObjectType({
           usertype: args.usertype,
           password: args.password,
         })
+
         const newUser = await user.save()
+
         console.log('adding a user')
 
         return newUser
