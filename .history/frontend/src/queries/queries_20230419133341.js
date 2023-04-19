@@ -8,7 +8,7 @@ export const registration = gql`
     $usertype:String!
     $password: String!
   ) {
-    addUser(
+    registration(
           email: $email 
           firstName:$firstName
           lastName:$lastName

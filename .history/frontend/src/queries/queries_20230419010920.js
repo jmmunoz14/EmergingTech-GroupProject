@@ -2,47 +2,34 @@ import { gql } from '@apollo/client'
 
 export const registration = gql`
   mutation registration(
-    $email: String!
-    $firstName: String!
-    $lastName: String!
+    $email: String!, 
+    $password: String!, 
+    $firstName: String!, 
+    $lastName: String!, 
+    $address: String!, 
+    $city: String!, 
+    $phone: String!, 
     $usertype:String!
-    $password: String!
   ) {
-    addUser(
-          email: $email 
+    registration(
+          email: $email, 
+          password: $password
           firstName:$firstName
           lastName:$lastName
+          address:$address
+          city:$city
+          phone:$phone
           usertype:$usertype
-          password: $password
     ) {
       _id
-      email
-      firstName
-      lastName
-      usertype
-      password
-    }
-  }
-`
-
-export const ADD_COURSE = gql`
-  mutation AddCourse(
-    $courseCode: String!
-    $courseName: String!
-    $section: String!
-    $semester: String!
-  ) {
-    addCourse(
-      courseCode: $courseCode
-      courseName: $courseName
-      section: $section
-      semester: $semester
-    ) {
-      _id
-      courseCode
-      courseName
-      section
-      semester
+          email 
+          password
+          firstName
+          lastName
+          address
+          city
+          phone
+          usertype
     }
   }
 `
@@ -70,7 +57,27 @@ export const DELETE_COURSE = gql`
   }
 `
 
-
+export const ADD_COURSE = gql`
+  mutation AddCourse(
+    $courseCode: String!
+    $courseName: String!
+    $section: String!
+    $semester: String!
+  ) {
+    addCourse(
+      courseCode: $courseCode
+      courseName: $courseName
+      section: $section
+      semester: $semester
+    ) {
+      _id
+      courseCode
+      courseName
+      section
+      semester
+    }
+  }
+`
 
 export const GET_COURSE = gql`
   query GetCourse($_id: String!) {
