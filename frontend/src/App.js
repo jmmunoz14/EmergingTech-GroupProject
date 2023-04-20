@@ -26,6 +26,8 @@ import SymptomsChecker from './components/SymptomsChecker'
 
 import EditCourse from './components/EditCourse'
 import Register from './components/Register'
+import Login from './components/Login'
+
 //
 function App() {
   return (
@@ -48,7 +50,9 @@ function App() {
                 <Nav.Link as={Link} to="/register"  style={{color: "#444"}}>
                   Register
                 </Nav.Link>  
-
+                <Nav.Link as={Link} to="/login"  style={{color: "#444"}}>
+                  Login
+                </Nav.Link> 
               </Nav>
             </Navbar.Collapse>
           </Container>
@@ -59,6 +63,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="register" element={<Register />} />
+            <Route path="login" element={<Login />} />
             <Route path="courseslist" element={<CourseList />} />
             <Route path="course/:id" element={<EditCourse />} />
             <Route path="addcourse" element={<NewCourseForm />} />
