@@ -31,26 +31,24 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Navbar bg="primary" variant="dark" expand="lg">
+        <Navbar bg="light" variant="dark" expand="lg" style={{backgroundColor: "#f5f5f5", fontSize: "1.2rem"}}>
           <Container>
-            <Navbar.Brand href="#home">
-              React Client For Courses App
+            <Navbar.Brand href="#home"  style={{color: "#444"}}>
+              COMP 308 Nurse & Patient System
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/home">
+                <Nav.Link as={Link} to="/home"  style={{color: "#444"}}>
                   Home
                 </Nav.Link>
-                <Nav.Link as={Link} to="/courseslist">
-                  List of Courses
-                </Nav.Link>
-                <Nav.Link as={Link} to="/register">
-                  Register
-                </Nav.Link>  
-                <Nav.Link as={Link} to="/symptoms-checker">
+                <Nav.Link as={Link} to="/symptoms-checker"  style={{color: "#444"}}>
                   Symptoms Checker
                 </Nav.Link>
+                <Nav.Link as={Link} to="/register"  style={{color: "#444"}}>
+                  Register
+                </Nav.Link>  
+
               </Nav>
             </Navbar.Collapse>
           </Container>
