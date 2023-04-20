@@ -1,6 +1,6 @@
 //import withRouter from './withRouter';
-
 import React, { Component, useState } from 'react'
+import symptomsBground from '../assets/symptoms.jpg';
 
 function SymptomsChecker() {
   const [symptoms, setSymptoms] = useState({
@@ -37,9 +37,19 @@ function SymptomsChecker() {
   }
 
   return (
-    <div>
-      <h1>Symptom Checker</h1>
-      <form onSubmit={handleSubmit}>
+    <div style={{
+      backgroundImage: `url(${symptomsBground})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'top',
+      minHeight: '100vh',
+      display: 'flex',
+      justifyContent: 'left',
+      alignItems: 'center',
+    }}
+    >
+      
+      <form onSubmit={handleSubmit} style={{fontSize: '1.5em'}}>
+        <div style={{transform: 'scale(1.5)', marginLeft: '1.5in'}}>
         <label>
           <input
             type="checkbox"
@@ -48,6 +58,8 @@ function SymptomsChecker() {
           />
           Headache
         </label>
+        </div>
+        <div style={{transform: 'scale(1.5)', marginLeft: '1.5in'}}>
         <label>
           <input
             type="checkbox"
@@ -56,6 +68,8 @@ function SymptomsChecker() {
           />
           Fever
         </label>
+        </div>
+        <div style={{transform: 'scale(1.5)', marginLeft: '1.5in'}}>
         <label>
           <input
             type="checkbox"
@@ -64,6 +78,8 @@ function SymptomsChecker() {
           />
           Stomachache
         </label>
+        </div>
+        <div style={{transform: 'scale(1.5)', marginLeft: '1.5in'}}>
         <label>
           <input
             type="checkbox"
@@ -72,6 +88,8 @@ function SymptomsChecker() {
           />
           Muscle Pain
         </label>
+        </div>
+        <div style={{transform: 'scale(1.5)', marginLeft: '1.5in'}}>
         <label>
           <input
             type="checkbox"
@@ -80,7 +98,8 @@ function SymptomsChecker() {
           />
           Dizziness
         </label>
-        <button type="submit">Check Symptoms</button>
+        </div>
+        <button type="submit" style={{marginTop: '1em', marginLeft: '1.5in'}}>Check Symptoms</button>
       </form>
     </div>
   )
