@@ -15,7 +15,7 @@ const Register = () => {
 
   const [register, { loading, error }] = useMutation(registration, {onCompleted() {
     alert("User successfully registered");  
-    //history('/courseslist')//change this
+    //history('/courseslist')//change this to login page.
     },
   })
 
