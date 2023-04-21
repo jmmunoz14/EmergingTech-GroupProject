@@ -29,13 +29,7 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
 
-const symptoms = [
-  'headache',
-  'fever',
-  'stomachache',
-  'muscle pain',
-  'dizziness',
-]
+
 const labels = ['rest', 'doctor']
 
 async function trainModel() {
@@ -51,7 +45,14 @@ async function trainModel() {
     loss: 'categoricalCrossentropy',
     metrics: ['accuracy'],
   })
-
+  //values for the training data matrix:
+  const symptoms = [
+    'headache',
+    'fever',
+    'stomachache',
+    'muscle pain',
+    'dizziness',
+  ]
   // Prepare the training data
   const trainingData = tf.tensor2d([
     [1, 0, 0, 1, 0],
