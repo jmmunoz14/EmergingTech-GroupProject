@@ -25,13 +25,18 @@ export const registration = gql`
   }
 `
 export const logingql = gql`
-  mutation logingql($email: String!, $password: String!) {
-    loginmute(email: $email, password: $password ) {
+mutation logingql(
+  $email: String!, 
+  $password: String!
+  ) {
+  loginUser(
+    email: $email, 
+    password: $password
+    ) {
       email
-      password
       usertype
-    }
   }
+}
 `
 
 export const ADD_COURSE = gql`
