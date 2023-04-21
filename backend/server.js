@@ -3,6 +3,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const expressGraphQL = require('express-graphql').graphqlHTTP
 const {
   GraphQLSchema,
@@ -131,26 +133,6 @@ const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
   fields: () => ({
-    loginmute: {
-      type: UserType,
-      description: 'Login',
-      args: {
-        email: { type: GraphQLNonNull(GraphQLString) },
-        usertype: { type: GraphQLNonNull(GraphQLString) },
-        password: { type: GraphQLNonNull(GraphQLString) },
-      },
-      resolve: async (parent, args) => {
-        const user = new User({
-          email: args.email,
-          usertype: args.usertype,
-          password: args.password,
-        })
-        const loginUser = await user.save()
-        console.log('user trying to log in...')
-
-        return loginUser
-      },
-    },
     addUser: {
       type: UserType,
       description: 'Add a User',
@@ -170,9 +152,36 @@ const RootMutationType = new GraphQLObjectType({
           password: args.password,
         })
         const newUser = await user.save()
+        const token = jwt.sign({_id: newUser._id, email: newUser.email}, private_key, {algorithm: "RS256"})
         console.log('adding a user')
 
         return newUser
+      },
+    },
+    loginUser: {
+      type: UserType,
+      description: 'Login',
+      args: {
+        password: { type: GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (parent, { email, password }) => {
+        
+        const user = await User.findOne({ email });
+
+        if (!user) {
+          throw new Error('User not found');
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          throw new Error('Incorrect password');
+        }
+        //const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        
+        const usertype = user.usertype;
+        console.log(email + ' (' + usertype + ') logging in...')
+
+        return {email, usertype}
       },
     },
     editUser: {

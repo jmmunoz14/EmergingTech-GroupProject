@@ -6,26 +6,32 @@ import { logingql } from '../queries/queries'
 
 const Login = () => {
   const history = useNavigate()
-
+  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const [login, { loading, error }] = useMutation(logingql, {onCompleted() {
-    alert("User successfully logged in.");  
-    //history('/courseslist')//change this to login page.
+  const [login, { loading, error}] = useMutation(logingql, {
+    onCompleted: (data) => {
+      
+      if(data.login.usertype === "patient"){
+        history('/patient')
+      }
+      else{
+        history('/nurse/')
+      }
+      
     },
-  })
+  });
 
+    
   const handleSubmit = (event) => {
     event.preventDefault()
     login({
       variables: {
-        email,
-        password,
+        email: email,
+        password: password
       },
     })
-    setEmail('')
-    setPassword('')
   }
 
   return (

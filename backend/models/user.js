@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-//import bcrypt from 'bcrypt';
+const bcrypt = require('bcrypt')
 
 const userSchema=new mongoose.Schema({
     email:{
@@ -29,11 +29,11 @@ const userSchema=new mongoose.Schema({
         minlength:6
     }
 });
-/*
+
 userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(this.password, salt);
     this.password = hashedPassword;
-})*/
+})
 
 module.exports = mongoose.model('User', userSchema)
