@@ -35,10 +35,10 @@ function SymptomsChecker() {
     })
     const result = await response.json()
     alert(
-      'should rest:' +
+      'should see doctor:' +
         result.rest +
         '\n' +
-        'should see doctor:' +
+        'should rest:' +
         result.doctor,
     )
     console.log(result)
@@ -62,7 +62,7 @@ function SymptomsChecker() {
     >
       <form
         onSubmit={handleSubmit}
-        style={{ fontSize: '1.5em', marginTop: '150px' }}
+        style={{ fontSize: '1.5em', marginTop: '200px' }}
       >
         {Object.keys(symptoms).map((symptom) => (
           <div key={symptom} style={{ transform: 'scale(1.5)' }}>

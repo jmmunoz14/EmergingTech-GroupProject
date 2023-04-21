@@ -35,8 +35,6 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
 
-const labels = ['rest', 'doctor']
-
 async function trainModel() {
   // Define a sequential model
   const model = tf.sequential()
@@ -59,29 +57,23 @@ async function trainModel() {
 
   // Extract the symptoms and labels from the parsed CSV data
   const symptoms = Object.keys(parsedData.data[0]).slice(0, 17)
-  console.log(symptoms)
-  const stayHomeIndex = symptoms.length
-  console.log(stayHomeIndex)
-
-  const goToDoctorIndex = stayHomeIndex + 1
-  console.log(goToDoctorIndex)
+  const goToDoctorIndex = symptoms.length
 
   const trainingData = parsedData.data.map((row) =>
     Object.values(row)
-      .slice(0, stayHomeIndex)
+      .slice(0, goToDoctorIndex)
       .map((val) => parseInt(val)),
   )
   const trainingLabels = parsedData.data.map((row) => {
     const stayHomeLabel = parseInt(row.home)
     const goToDoctorLabel = parseInt(row.medic)
-    return [stayHomeLabel, goToDoctorLabel]
+    return [goToDoctorLabel, stayHomeLabel]
   })
 
   // Train the model
   trainingData.pop()
   trainingLabels.pop()
 
-  console.log(trainingData.length)
   const tensorTrainingData = tf.tensor2d(trainingData)
   const tensorTrainingLabels = tf.tensor2d(trainingLabels)
 
