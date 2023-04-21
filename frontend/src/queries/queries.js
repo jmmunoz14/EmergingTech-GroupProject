@@ -38,7 +38,21 @@ mutation logingql(
   }
 }
 `
-
+export const motivationalList= gql`
+query motivationalList {
+  motivationalList{
+    title,
+    description,
+    videoURL
+  }
+}`
+export const CreateDailyMotivationalFeed = gql`
+mutation createDailyMotivationalFeed($title:String,$description:String,$videoURL:String,$date:String){
+  createDailyMotivationalFeed(title: $title,description: $description,videoURL:$videoURL,date:$date){
+    success
+  }
+}
+`;
 export const ADD_COURSE = gql`
   mutation AddCourse(
     $courseCode: String!
