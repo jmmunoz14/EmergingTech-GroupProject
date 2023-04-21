@@ -33,7 +33,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Navbar bg="light" variant="dark" expand="lg" style={{backgroundColor: "#f5f5f5", fontSize: "1.2rem"}}>
+        {/* <Navbar bg="light" variant="dark" expand="lg" style={{backgroundColor: "#f5f5f5", fontSize: "1.2rem"}}>
           <Container>
             <Navbar.Brand href="#home"  style={{color: "#444"}}>
               COMP 308 Nurse & Patient System
@@ -56,7 +56,39 @@ function App() {
               </Nav>
             </Navbar.Collapse>
           </Container>
-        </Navbar>
+        </Navbar> */}
+
+
+        <nav>
+          <ul className="menu-container">
+          <li className="menu-items">
+              <div className="menu-item active">
+              COMP 308 Nurse & Patient System
+              </div>
+            </li>
+
+            <li className="menu-items">
+              <Link className="menu-item " to="/">
+                Home
+              </Link>
+            </li>
+            <li className="menu-items">
+              <Link className="menu-item" to="/symptoms-checker">
+              Symptoms Checker
+              </Link>
+            </li>
+            <li className="menu-items">
+              <Link className="menu-item" to="/register">
+              Register
+              </Link>
+            </li>
+            <li className="menu-items">
+              <Link className="menu-item" to="/login">
+              Login
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
         <div>
           <Routes>

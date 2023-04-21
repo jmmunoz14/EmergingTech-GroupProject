@@ -35,6 +35,7 @@ const Login = () => {
   }
 
   return (
+    <div className='login-bg login-container'>
     <form className="add-form" onSubmit={handleSubmit}>
       <div className="input-container">
         <label className="form-label" htmlFor="email">
@@ -65,6 +66,7 @@ const Login = () => {
       </button>
       {error && <p>Error logging in: {error.message}</p>}
     </form>
+    </div>
   )
 }
 

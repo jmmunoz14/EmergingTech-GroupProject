@@ -38,6 +38,7 @@ const Register = () => {
   }
 
   return (
+    <div className='register-bg'>
     <form className="add-form" onSubmit={handleSubmit}>
       <div className="input-container">
         <label className="form-label" htmlFor="firstName">
@@ -104,6 +105,7 @@ const Register = () => {
       </button>
       {error && <p>Error adding user: {error.message}</p>}
     </form>
+    </div>
   )
 }
 
