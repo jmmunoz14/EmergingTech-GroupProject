@@ -48,8 +48,8 @@ function SymptomsChecker() {
     }}
     >
       
-      <form onSubmit={handleSubmit} style={{fontSize: '1.5em'}}>
-        <div style={{transform: 'scale(1.5)'}}>
+      <form onSubmit={handleSubmit}  className="symptoms-container">
+        <div className='symptom-lists' >
         <label>
           <input
             type="checkbox"
@@ -59,7 +59,7 @@ function SymptomsChecker() {
           Headache
         </label>
         </div>
-        <div style={{transform: 'scale(1.5)'}}>
+        <div className='symptom-lists' >
         <label>
           <input
             type="checkbox"
@@ -69,7 +69,7 @@ function SymptomsChecker() {
           Fever
         </label>
         </div>
-        <div style={{transform: 'scale(1.5)'}}>
+        <div className='symptom-lists' >
         <label>
           <input
             type="checkbox"
@@ -79,7 +79,7 @@ function SymptomsChecker() {
           Stomachache
         </label>
         </div>
-        <div style={{transform: 'scale(1.5)'}}>
+        <div className='symptom-lists' >
         <label>
           <input
             type="checkbox"
@@ -89,7 +89,7 @@ function SymptomsChecker() {
           Muscle Pain
         </label>
         </div>
-        <div style={{transform: 'scale(1.5)'}}>
+        <div className='symptom-lists'  >
         <label>
           <input
             type="checkbox"
@@ -99,7 +99,7 @@ function SymptomsChecker() {
           Dizziness
         </label>
         </div>
-        <button type="submit" style={{marginTop: '1em'}}>Check Symptoms</button>
+        <button type="submit">Check Symptoms</button>
       </form>
     </div>
   )
