@@ -16,8 +16,14 @@ const {
 } = require('graphql')
 const User = require('./models/user')
 
+const fs = require('fs')
+const Papa = require('papaparse')
+
+const csv = require('csv-parser')
+
 // Import TensorFlow.js and the required packages
 const tf = require('@tensorflow/tfjs')
+const { debug } = require('console')
 require('@tensorflow/tfjs-node')
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -29,13 +35,14 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
 
-
 const labels = ['rest', 'doctor']
 
 async function trainModel() {
   // Define a sequential model
   const model = tf.sequential()
-  model.add(tf.layers.dense({ units: 16, inputShape: [5], activation: 'relu' }))
+  model.add(
+    tf.layers.dense({ units: 16, inputShape: [17], activation: 'relu' }),
+  )
   model.add(tf.layers.dense({ units: 8, activation: 'relu' }))
   model.add(tf.layers.dense({ units: 2, activation: 'softmax' }))
 
@@ -45,44 +52,48 @@ async function trainModel() {
     loss: 'categoricalCrossentropy',
     metrics: ['accuracy'],
   })
-  //values for the training data matrix:
-  const symptoms = [
-    'headache',
-    'fever',
-    'stomachache',
-    'muscle pain',
-    'dizziness',
-  ]
-  // Prepare the training data
-  const trainingData = tf.tensor2d([
-    [1, 0, 0, 1, 0],
-    [0, 1, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [0, 1, 1, 0, 0],
-    [0, 0, 1, 1, 0],
-    [0, 0, 0, 1, 1],
-    [1, 1, 1, 1, 1],
-    [0, 1, 1, 0, 1],
-  ])
-  const trainingLabels = tf.tensor2d([
-    [1, 0],
-    [0, 1],
-    [1, 0],
-    [0, 1],
-    [0, 1],
-    [1, 0],
-    [0, 1],
-    [0, 1],
-  ])
+
+  // Read the CSV file
+  const csvFile = fs.readFileSync('sympts.csv', 'utf8')
+  const parsedData = Papa.parse(csvFile, { header: true })
+
+  // Extract the symptoms and labels from the parsed CSV data
+  const symptoms = Object.keys(parsedData.data[0]).slice(0, 17)
+  console.log(symptoms)
+  const stayHomeIndex = symptoms.length
+  console.log(stayHomeIndex)
+
+  const goToDoctorIndex = stayHomeIndex + 1
+  console.log(goToDoctorIndex)
+
+  const trainingData = parsedData.data.map((row) =>
+    Object.values(row)
+      .slice(0, stayHomeIndex)
+      .map((val) => parseInt(val)),
+  )
+  const trainingLabels = parsedData.data.map((row) => {
+    const stayHomeLabel = parseInt(row.home)
+    const goToDoctorLabel = parseInt(row.medic)
+    return [stayHomeLabel, goToDoctorLabel]
+  })
 
   // Train the model
-  await model.fit(trainingData, trainingLabels, {
+  trainingData.pop()
+  trainingLabels.pop()
+
+  console.log(trainingData.length)
+  const tensorTrainingData = tf.tensor2d(trainingData)
+  const tensorTrainingLabels = tf.tensor2d(trainingLabels)
+
+  await model.fit(tensorTrainingData, tensorTrainingLabels, {
     epochs: 50,
     callbacks: tf.callbacks.earlyStopping({ monitor: 'loss', patience: 5 }),
   })
 
   // Evaluate the model on a test example
-  const input = tf.tensor2d([[0, 1, 1, 0, 0]]) // no headache, fever, stomachache, no muscle pain, no dizziness
+  const input = tf.tensor2d([
+    [1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ])
   const prediction = model.predict(input)
   console.log(`Prediction: ${prediction.dataSync()[0]}`) // 1 = go to doctor, 0 = rest at home
 
@@ -153,7 +164,11 @@ const RootMutationType = new GraphQLObjectType({
           password: args.password,
         })
         const newUser = await user.save()
-        const token = jwt.sign({_id: newUser._id, email: newUser.email}, private_key, {algorithm: "RS256"})
+        const token = jwt.sign(
+          { _id: newUser._id, email: newUser.email },
+          private_key,
+          { algorithm: 'RS256' },
+        )
         console.log('adding a user')
 
         return newUser
@@ -167,22 +182,21 @@ const RootMutationType = new GraphQLObjectType({
         email: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, { email, password }) => {
-        
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email })
 
         if (!user) {
-          throw new Error('User not found');
+          throw new Error('User not found')
         }
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
-          throw new Error('Incorrect password');
+          throw new Error('Incorrect password')
         }
         //const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        
-        const usertype = user.usertype;
+
+        const usertype = user.usertype
         console.log(email + ' (' + usertype + ') logging in...')
 
-        return {email, usertype}
+        return { email, usertype }
       },
     },
     editUser: {

@@ -1,14 +1,26 @@
 //import withRouter from './withRouter';
 import React, { Component, useState } from 'react'
-import symptomsBground from '../assets/symptoms.jpg';
+import symptomsBground from '../assets/symptoms.jpg'
 
 function SymptomsChecker() {
   const [symptoms, setSymptoms] = useState({
-    headache: false,
     fever: false,
-    stomachache: false,
-    musclePain: false,
-    dizziness: false,
+    fatigueOrWeakness: false,
+    headache: false,
+    muscleOrBodyAches: false,
+    coughing: false,
+    shortnessOfBreath: false,
+    chestPainOrTightness: false,
+    soreThroat: false,
+    runnyOrStuffyNose: false,
+    nauseaOrVomiting: false,
+    diarrhea: false,
+    abdominalPainOrCramping: false,
+    rash: false,
+    swollenLymphNodes: false,
+    weightLoss: false,
+    changesInVisionHearingOrSpeech: false,
+    jointPainOrStiffness: false,
   })
 
   const handleSubmit = async (e) => {
@@ -37,69 +49,37 @@ function SymptomsChecker() {
   }
 
   return (
-    <div style={{
-      backgroundImage: `url(${symptomsBground})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'top',
-      minHeight: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
+    <div
+      style={{
+        backgroundImage: `url(${symptomsBground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'top',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
     >
-      
-      <form onSubmit={handleSubmit} style={{fontSize: '1.5em'}}>
-        <div style={{transform: 'scale(1.5)'}}>
-        <label>
-          <input
-            type="checkbox"
-            checked={symptoms.headache}
-            onChange={() => handleSymptomChange('headache')}
-          />
-          Headache
-        </label>
-        </div>
-        <div style={{transform: 'scale(1.5)'}}>
-        <label>
-          <input
-            type="checkbox"
-            checked={symptoms.fever}
-            onChange={() => handleSymptomChange('fever')}
-          />
-          Fever
-        </label>
-        </div>
-        <div style={{transform: 'scale(1.5)'}}>
-        <label>
-          <input
-            type="checkbox"
-            checked={symptoms.stomachache}
-            onChange={() => handleSymptomChange('stomachache')}
-          />
-          Stomachache
-        </label>
-        </div>
-        <div style={{transform: 'scale(1.5)'}}>
-        <label>
-          <input
-            type="checkbox"
-            checked={symptoms.musclePain}
-            onChange={() => handleSymptomChange('musclePain')}
-          />
-          Muscle Pain
-        </label>
-        </div>
-        <div style={{transform: 'scale(1.5)'}}>
-        <label>
-          <input
-            type="checkbox"
-            checked={symptoms.dizziness}
-            onChange={() => handleSymptomChange('dizziness')}
-          />
-          Dizziness
-        </label>
-        </div>
-        <button type="submit" style={{marginTop: '1em'}}>Check Symptoms</button>
+      <form
+        onSubmit={handleSubmit}
+        style={{ fontSize: '1.5em', marginTop: '150px' }}
+      >
+        {Object.keys(symptoms).map((symptom) => (
+          <div key={symptom} style={{ transform: 'scale(1.5)' }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={symptoms[symptom]}
+                onChange={() => handleSymptomChange(symptom)}
+              />
+              {symptom.charAt(0).toUpperCase() +
+                symptom.slice(1).replace(/([A-Z])/g, ' $1')}
+            </label>
+          </div>
+        ))}
+        <button type="submit" style={{ marginTop: '1em' }}>
+          Check Symptoms
+        </button>
       </form>
     </div>
   )
