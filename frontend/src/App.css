@@ -234,3 +234,23 @@ button[type=submit]:hover {
 input[type=checkbox] {
   margin: 10px;
 }
+
+
+.login-bg {
+  background-image: url("./assets/4.jpg");
+  background-size:cover;
+  background-position: center;
+
+}
+
+.login-container {
+  height:1000px;
+}
+
+.register-bg {
+  background-image: url("./assets/4.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}

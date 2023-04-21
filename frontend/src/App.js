@@ -62,13 +62,13 @@ function App() {
         <nav>
           <ul className="menu-container">
           <li className="menu-items">
-              <div className="menu-item">
+              <div className="menu-item active">
               COMP 308 Nurse & Patient System
               </div>
             </li>
 
             <li className="menu-items">
-              <Link className="menu-item active" to="/">
+              <Link className="menu-item " to="/">
                 Home
               </Link>
             </li>
