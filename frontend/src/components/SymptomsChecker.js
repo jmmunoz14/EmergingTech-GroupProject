@@ -3,6 +3,9 @@ import React, { Component, useState } from 'react'
 import symptomsBground from '../assets/symptoms.jpg'
 
 function SymptomsChecker() {
+
+  const [msg, setMsg] = useState('')
+
   const [symptoms, setSymptoms] = useState({
     fever: false,
     fatigueOrWeakness: false,
@@ -34,13 +37,19 @@ function SymptomsChecker() {
       body: JSON.stringify({ data }),
     })
     const result = await response.json()
-    alert(
+    /*alert(
       'should see doctor:' +
         result.rest +
         '\n' +
         'should rest:' +
         result.doctor,
-    )
+    )*/
+
+      if (result.doctor >= result.rest)
+        setMsg("SEE A DOCTOR");
+      else
+        setMsg("GET SOME REST");
+
     console.log(result)
   }
 
@@ -80,6 +89,7 @@ function SymptomsChecker() {
         <button type="submit" style={{ marginTop: '1em' }}>
           Check Symptoms
         </button>
+          <label style={{ transform: 'scale(1.5)', marginLeft: '200px', backgroundColor: msg === "SEE A DOCTOR" ? "red" : "green", }}>{msg}</label>
       </form>
     </div>
   )
