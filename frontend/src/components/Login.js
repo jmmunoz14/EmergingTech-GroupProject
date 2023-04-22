@@ -14,10 +14,12 @@ const Login = () => {
     onCompleted: (data) => {
       
       if(data.login.usertype === "patient"){
-        history('/patient')
+        alert("I am a patient")
+        //history('/patient')
       }
       else{
-        history('/nurse/')
+        alert("I am a nurse")
+        //history('/nurse/')
       }
       
     },
