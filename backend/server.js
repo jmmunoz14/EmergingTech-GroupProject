@@ -133,6 +133,8 @@ const RootQueryType = new GraphQLObjectType({
   }),
 })
 
+const jwtKey = 'secret_test'
+
 const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
@@ -158,8 +160,8 @@ const RootMutationType = new GraphQLObjectType({
         const newUser = await user.save()
         const token = jwt.sign(
           { _id: newUser._id, email: newUser.email },
-          private_key,
-          { algorithm: 'RS256' },
+          jwtKey,
+          { algorithm: 'HS256' },
         )
         console.log('adding a user')
 
