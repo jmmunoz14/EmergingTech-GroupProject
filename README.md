@@ -1,6 +1,7 @@
-# EmergingTech-GroupProject
+# EmergingTech-GroupProject 
+COMP308
 
-Group Members:
+##Group Members:
 Beltran, Tyrelle
 Jirofty, Atta
 Mehta, Sofia
